@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import HomeLogo from "../assets/home-logo.svg";
 import searchIcon from "../assets/search-icon.svg";
@@ -9,8 +10,22 @@ import navMessage from "../assets/nav-messaging.svg";
 import navnNotification from "../assets/nav-notifications.svg";
 import navWork from "../assets/nav-work.svg";
 import DownIcon from "../assets/down-icon.svg";
-
+import userIcon from "../assets/user.png";
 const Header = (props) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const navListItems = [
+    { icon: NavHome, label: "Home" },
+    { icon: MyNetwork, label: "My Network" },
+    { icon: navJobs, label: "Jobs" },
+    { icon: navMessage, label: "Messaging" },
+    { icon: navnNotification, label: "Notifications" },
+  ];
+
+  const handleNavItemClick = (index) => {
+    setActiveIndex(index);
+  };
+
   return (
     <Container>
       <Content>
@@ -30,48 +45,40 @@ const Header = (props) => {
         </Search>
         <Nav>
           <NavListWrap>
-            <NavList className="active">
-              <a>
-                <img src={NavHome} alt="" />
-                <span>Home</span>
-              </a>
-            </NavList>
+            {navListItems.map((item, index) => (
+              <NavList
+                key={index}
+                className={index === activeIndex ? "active" : ""}
+              >
+                <a onClick={() => handleNavItemClick(index)}>
+                  <img src={item.icon} alt="" />
+                  <span className="sp">{item.label}</span>
+                </a>
+              </NavList>
+            ))}
 
-            <NavList>
+            <User>
               <a>
-                <img src={MyNetwork} alt="" />
-                <span>My Network</span>
+                <img src={userIcon} alt="" />
+                <span>
+                  Me
+                  <img src={DownIcon} alt="" />
+                </span>
               </a>
-            </NavList>
+              <SignOut>
+                <a>SignOut</a>
+              </SignOut>
+            </User>
 
-            <NavList>
-              <a>
-                <img src={navJobs} alt="" />
-                <span>Jobs</span>
-              </a>
-            </NavList>
-
-            <NavList>
-              <a>
-                <img src={navMessage} alt="" />
-                <span>Messaging</span>
-              </a>
-            </NavList>
-
-            <NavList>
-              <a>
-                <img src={navnNotification} alt="" />
-                <span>Notifications</span>
-              </a>
-            </NavList>
-
-            <NavList>
+            <Work>
               <a>
                 <img src={navWork} alt="" />
-                <span>Work</span>
+                <span>
+                  Work
+                  <img src={DownIcon} alt="" />
+                </span>
               </a>
-              <img src={DownIcon} className="downArrow" alt="" />
-            </NavList>
+            </Work>
           </NavListWrap>
         </Nav>
       </Content>
@@ -158,15 +165,16 @@ const NavListWrap = styled.ul`
   list-style: none;
 
   .active {
-    border-bottom: 4px solid black;
-    /* span:after {
-      content: "";
-      transform: scaleX(1);
+    border-bottom: 2px solid black;
+    transform: scaleX(1);
+    transition: transform 0.2s;
+
+    /* .sp:after {
+      content: " ";
+      position: absolute;
       border-bottom: 2px solid var(--white, #fff);
       bottom: 0;
       left: 0;
-      position: absolute;
-      transition: transform 0.2s;
     } */
   }
 `;
@@ -208,6 +216,34 @@ const NavList = styled.li`
       color: rgba(0, 0, 0, 0.9);
     }
   }
+`;
+
+const SignOut = styled.div`
+  position: absolute;
+  top: 45px;
+  background-color: white;
+  border-radius: 5px;
+  width: 100px;
+  height: 40px;
+  font-size: 15px;
+  transition-duration: 167ms;
+  text-align: center;
+  display: none;
+`;
+
+const User = styled(NavList)`
+  &:hover {
+    ${SignOut} {
+      /* align-items: center;
+      display: flex;
+      justify-content: center; */
+      display: block;
+    }
+  }
+`;
+
+const Work = styled(User)`
+  border-left: 1px solid grey;
 `;
 
 export default Header;
