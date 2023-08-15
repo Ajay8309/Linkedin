@@ -6,10 +6,12 @@ import { ToastContainer, Zoom } from "react-toastify";
 import Login from "./components/Login";
 import Home from "./components/Home";
 // import Header from "./components/Header";
+import { Provider } from "react-redux";
+import store from "./store";
 
 const App = () => {
   return (
-    <>
+    <Provider store={store}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
@@ -17,7 +19,7 @@ const App = () => {
         </Routes>
         <ToastContainer transition={Zoom} />
       </BrowserRouter>
-    </>
+    </Provider>
   );
 };
 

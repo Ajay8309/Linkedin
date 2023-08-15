@@ -3,6 +3,8 @@ import styled from "styled-components";
 import NavLogo from "../assets/LinkedinLogo.png";
 import LoginHero from "../assets/login-hero.svg";
 import GoogleLogo from "../assets/google.svg";
+import { connect } from "react-redux";
+import { SignUpAPI } from "../action";
 
 const Login = (props) => {
   return (
@@ -24,9 +26,9 @@ const Login = (props) => {
         </Hero>
 
         <Form>
-          <Google>
+          <Google onClick={() => props.SignIn()}>
             <img src={GoogleLogo} alt="" />
-            SIgn In with Google
+            Sign In with Google
           </Google>
         </Form>
       </Section>
@@ -184,4 +186,14 @@ const Google = styled.button`
     margin-left: 8%;
   }
 `;
-export default Login;
+
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  SignIn: dispatch(SignUpAPI()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
+// export default Login;
